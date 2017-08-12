@@ -1,0 +1,18 @@
+[
+{
+  "module_name" : "ExpressionUtils",
+  "type" : "sdk",
+  "version_tag" : "dev"
+}, 
+{
+  "module_name" : "GenomeSearchUtil",
+  "type" : "sdk",
+  "version_tag" : "dev"
+},
+
+{
+  "module_name" : "KBaseFeatureValues",
+  "type" : "sdk",
+  "version_tag" : "dev"
+}
+]

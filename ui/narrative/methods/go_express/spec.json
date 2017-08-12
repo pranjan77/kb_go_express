@@ -11,17 +11,58 @@
     },
     "parameters": [ 
         {
-            "id": "parameter_1",
-            "optional": true,
+            "id": "expression_ref",
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "" ],
             "field_type": "text",
             "text_options": {
-                "valid_ws_types": [ ]
+                "valid_ws_types": ["KBaseFeatureValues.ExpressionMatrix"]
             }
-        }
+        },
+
+        {
+            "id": "genome_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": ["KBaseGenomes.Genome"]
+            }
+        },
+
+
+        {
+          "id" : "sample_id",
+          "optional" : false,
+          "advanced" : false,
+          "allow_multiple" : true,
+          "default_values" : [ "" ],
+          "field_type" : "text"
+          
+        },
+        {
+          "id" : "condition",
+          "optional" : false,
+          "advanced" : false,
+          "allow_multiple" : false,
+          "default_values" : [ "" ],
+          "field_type" : "text"
+        },
     ],
+
+    "parameter-groups": [
+      {
+        "id": "sample_n_conditions",
+        "parameters": ["condition", "sample_id"],
+        "optional": false,
+        "allow_multiple": true,
+        "with_border": true
+      }
+],
     "behavior": {
         "service-mapping": {
             "url": "",
@@ -37,6 +78,7 @@
                     "target_argument_position": 1
                 }
             ],
+
             "output_mapping": [
                 {
                     "service_method_output_path": [0],

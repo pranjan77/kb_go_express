@@ -1,0 +1,61 @@
+#
+# define display information
+#
+name: Identify gene ontology signatures in gene expression data 
+
+tooltip: |
+     Identify and visualise robust gene ontology signatures through supervised classification of gene expression data
+
+screenshots: []
+
+icon: icon.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    expression_ref :
+        ui-name : |
+            Expression matrix
+        short-hint : |
+            Expression Matrix
+        long  : |
+            Expression matrix
+
+    condition:
+        ui-name : |
+            Condition Label
+        short-hint : |
+            Short label for each sample in expression matrix. All replicates for the same condition must have same label.
+        long : |
+            Short label for each sample in expression matrix. All replicates for the same condition must have same label.
+
+    sample_id:
+        ui-name : |
+            Sample name
+        short-hint : |
+            Select the sample name in the expression matrix
+
+    genome:
+        ui-name : |
+            Genome annotated with gene ontology terms
+        short-hint : |
+            Genome annotated with gene ontology terms
+        long : |
+            Genome annotated with gene ontology terms
+
+
+parameter-groups :
+    sample_n_conditions :
+        ui-name : |
+             Sample and Condition
+        short-hint : |
+            For each sample, select the sample and provide the short label for condition. All replicates for the same condition must have same label.
+
+
+description : |
+    <p>Identify and visualise robust gene ontology signatures through supervised classification of gene expression data</p>

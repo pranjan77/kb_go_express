@@ -18,6 +18,11 @@ from kb_go_express.kb_go_expressImpl import kb_go_express
 from kb_go_express.kb_go_expressServer import MethodContext
 from kb_go_express.authclient import KBaseAuth as _KBaseAuth
 
+from ExpressionUtils.ExpressionUtilsClient import ExpressionUtils
+from KBaseFeatureValues.KBaseFeatureValuesClient import KBaseFeatureValues
+
+from DataFileUtil.DataFileUtilClient import DataFileUtil
+
 
 class kb_go_expressTest(unittest.TestCase):
 
@@ -80,7 +85,81 @@ class kb_go_expressTest(unittest.TestCase):
         # Prepare test objects in workspace if needed using
         # self.getWsClient().save_objects({'workspace': self.getWsName(),
         #                                  'objects': []})
-        #
+        #exp_util=ExpressionUtils(os.environ['SDK_CALLBACK_URL'])
+        #expressionparams = {
+        #'expressionset_ref':'6878/391/8',
+        #'workspace_name': 'pranjan77:narrative_1501696934297',
+        #'output_obj_name': 'testout'
+        #}
+
+        #y = exp_util.get_expressionMatrix(expressionparams)
+        #fpkm=y['exprMatrix_FPKM_ref']
+        #print fpkm
+
+        #DownloadExpressionParams = {
+        #    'source_ref': '6878/391/8'
+        #}
+
+        #y = exp_util.download_expression(DownloadExpressionParams)
+        #print y
+
+        expression_object = '6878/413/15'
+
+        df = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
+
+        expression_matrix_data = df.get_objects({'object_refs':
+                                                  [expression_object]})['data'][0]['data']
+        #print expression_matrix_data
+
+        expression_matrix_TSV = []
+        col_ids = expression_matrix_data['data']['col_ids']
+        ids =  "\t". join ([str(x) for x in col_ids])
+        print ids
+        expression_matrix_TSV.append(" " + "\t" + ids + "\n")
+
+        feature_list = expression_matrix_data['data']['row_ids']
+        values = expression_matrix_data['data']['values']
+
+        for feature, value in zip (feature_list, values):
+            row_value =  "\t".join(map(str, value)) 
+            expression_matrix_TSV.append (feature + "\t" + row_value + "\n")
+
+
+        textstring_TSV = "".join (expression_matrix_TSV)
+        file = open('/kb/module/work/testfile2.txt','w')  
+        file.write(textstring_TSV)
+        file.close()
+
+
+
+
+
+
+
+
+
+        #exportmatrix_params ={
+        #'ws_matrix_id' :fpkm
+        #}
+
+
+
+        #fv = KBaseFeatureValues (os.environ['SDK_CALLBACK_URL'])
+        #exp_matrix = fv.export_matrix(exportmatrix_params)
+        #print exp_matrix
+
+
+        #tsv_params = {
+        #'ws_matrix_id' : fpkm,
+        #'to_shock': 1,
+        #'file_path':'/kb/module/work/tmp/out.txt'
+        #}
+
+        #y = fv.matrix_to_tsv_file(tsv_params)
+        #print y
+
+
+
         # Run your method by
         # ret = self.getImpl().your_method(self.getContext(), parameters...)
         #
