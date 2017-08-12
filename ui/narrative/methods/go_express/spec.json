@@ -39,11 +39,21 @@
           "id" : "sample_id",
           "optional" : false,
           "advanced" : false,
-          "allow_multiple" : true,
+          "allow_multiple" : false,
           "default_values" : [ "" ],
-          "field_type" : "text"
-          
-        },
+          "field_type" : "textsubdata",
+          "textsubdata_options" : {
+          "subdata_selection": {
+
+          "parameter_id" : "expression_ref",
+          "subdata_included" : ["col_ids"],
+          "path_to_subdata": ["col_ids"]
+      },
+      "multiselection":false,
+      "show_src_obj":false,
+      "allow_custom":false
+    }
+},
         {
           "id" : "condition",
           "optional" : false,
