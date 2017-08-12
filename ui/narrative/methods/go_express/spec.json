@@ -51,7 +51,7 @@
           "allow_multiple" : false,
           "default_values" : [ "" ],
           "field_type" : "text"
-        },
+        }
     ],
 
     "parameter-groups": [
@@ -67,33 +67,51 @@
         "service-mapping": {
             "url": "",
             "name": "kb_go_express",
-            "method": "your_method",
+            "method": "run_goexpress_app",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
-                    "target_argument_position": 0
+                    "target_property" : "workspace_name"
                 },
                 {
-                    "input_parameter": "parameter_1",
-                    "target_argument_position": 1
+                    "input_parameter" : "expression_ref",
+                    "target_type_transform": "resolved-ref",
+                    "target_property" : "expression_ref"
+                },
+                {
+                    "input_parameter": "sample_n_conditions",
+                     "target_property": "sample_n_conditions"
+                },
+                {
+                    "input_parameter": "genome_ref",
+                    "target_type_transform": "resolved-ref",
+                    "target_property" : "genome_ref"
                 }
             ],
 
-            "output_mapping": [
+            "output_mapping" : [
                 {
-                    "service_method_output_path": [0],
-                    "target_property": "output"
+                      "service_method_output_path": [0, "result_directory"],
+                      "target_property": "result_directory"
                 },
                 {
-                    "input_parameter": "parameter_1",
-                    "target_property": "input"
-                },
-                {
-                    "narrative_system_variable": "workspace",
-                    "target_property": "workspaceName"
+                      "service_method_output_path": [0,"report_name"],
+                      "target_property": "report_name"
+                    },
+                    {
+                      "service_method_output_path": [0,"report_ref"],
+                      "target_property": "report_ref"
+                    },
+                    {
+                      "constant_value": "16",
+                      "target_property": "report_window_line_height"
+                    },
+                    {
+                      "narrative_system_variable": "workspace",
+                      "target_property": "wsName"
+                    }
+                  ]
                 }
-            ]
-        }
-    },
-    "job_id_output_field": "docker"
-}
+              },
+              "job_id_output_field" : "docker"
+            }
