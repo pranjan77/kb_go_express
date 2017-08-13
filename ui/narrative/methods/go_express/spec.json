@@ -55,8 +55,8 @@
     {
       "id": "bin_merges",
       "parameters": [
-        "input_condition_ids",
-        "bin_to_merge"
+        "input_condition_ids_samples",
+        "input_condition_ids"
       ],
       "optional": true,
       "allow_multiple": true,
