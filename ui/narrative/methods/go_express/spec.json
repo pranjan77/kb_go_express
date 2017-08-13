@@ -1,129 +1,148 @@
 {
-    "ver": "0.0.1",
-    "authors": [
-        "pranjan77"
-    ],
-    "contact": "",
-    "categories": ["active"],
-    "widgets": {
-        "input": null,
-        "output": null
-    },
-    "parameters": [ 
-        {
-            "id": "expression_ref",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": ["KBaseFeatureValues.ExpressionMatrix"]
-            }
-        },
-
-        {
-            "id": "genome_ref",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": ["KBaseGenomes.Genome"]
-            }
-        },
-
-
-        {
-          "id" : "sample_id",
-          "optional" : false,
-          "advanced" : false,
-          "allow_multiple" : true,
-          "default_values" : [ "" ],
-          "field_type" : "textsubdata",
-          "textsubdata_options" : {
-          "subdata_selection": {
-
-          "parameter_id" : "expression_ref",
-          "subdata_included" : ["data/col_ids"],
-          "path_to_subdata": ["data,col_ids"],
-          "selection_id" : "col_ids"
-      },
-      "multiselection":true,
-      "show_src_obj":false,
-      "allow_custom":false
-    }
-},
- 
-        {
-          "id" : "condition",
-          "optional" : false,
-          "advanced" : false,
-          "allow_multiple" : false,
-          "default_values" : [ "" ],
-          "field_type" : "text"
-        }
-    ],
-
-"parameter-groups": [
-      {
-        "id": "sample_n_conditions",
-        "parameters": ["condition", "sample_id"],
-        "optional": false,
-        "allow_multiple": true,
-        "with_border": true
+  "ver": "1.0.0",
+  "authors": ["tgu2"],
+  "contact": "help@kbase.us",
+  "visible": true,
+  "categories": ["active","assembly","communities"],
+  "widgets": {
+    "input": null,
+    "output": "no-display"
+  },
+  "parameters": [
+    {
+      "id": "old_binned_contig_ref",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [""],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": ["KBaseMetagenomes.BinnedContigs"],
+        "is_output_name": false
       }
-],
-    "behavior": {
-        "service-mapping": {
-            "url": "",
-            "name": "kb_go_express",
-            "method": "run_goexpress_app",
-            "input_mapping": [
-                {
-                    "narrative_system_variable": "workspace",
-                    "target_property" : "workspace_name"
-                },
-                {
-                    "input_parameter" : "expression_ref",
-                    "target_type_transform": "resolved-ref",
-                    "target_property" : "expression_ref"
-                },
-                {
-                    "input_parameter": "sample_n_conditions",
-                     "target_property": "sample_n_conditions"
-                },
-                {
-                    "input_parameter": "genome_ref",
-                    "target_type_transform": "resolved-ref",
-                    "target_property" : "genome_ref"
-                }
-            ],
-
-            "output_mapping" : [
-                {
-                      "service_method_output_path": [0, "result_directory"],
-                      "target_property": "result_directory"
-                },
-                {
-                      "service_method_output_path": [0,"report_name"],
-                      "target_property": "report_name"
-                    },
-                    {
-                      "service_method_output_path": [0,"report_ref"],
-                      "target_property": "report_ref"
-                    },
-                    {
-                      "constant_value": "16",
-                      "target_property": "report_window_line_height"
-                    },
-                    {
-                      "narrative_system_variable": "workspace",
-                      "target_property": "wsName"
-                    }
-                  ]
-                }
-              },
-              "job_id_output_field" : "docker"
-            }
+    },
+    {
+      "id" : "bins_to_remove",
+      "optional" : true,
+      "advanced" : false,
+      "allow_multiple" : false,
+      "default_values" : [ "" ],
+      "field_type" : "textsubdata",
+      "textsubdata_options" : {
+        "subdata_selection": {
+          "parameter_id" : "old_binned_contig_ref",
+          "subdata_included" : ["bins/[*]/bid"],
+          "path_to_subdata": ["bins"],
+          "selection_id": "bid"
+        },
+        "multiselection":true,
+        "show_src_obj":false,
+        "allow_custom":false
+      }
+    },
+    {
+      "id": "new_bin_id",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [""],
+      "field_type": "text"
+    },
+    {
+      "id" : "bin_to_merge",
+      "optional" : false,
+      "advanced" : false,
+      "allow_multiple" : false,
+      "default_values" : [ "" ],
+      "field_type" : "textsubdata",
+      "textsubdata_options" : {
+        "subdata_selection": {
+          "parameter_id" : "old_binned_contig_ref",
+          "subdata_included" : ["bins/[*]/bid"],
+          "path_to_subdata": ["bins"],
+          "selection_id": "bid"
+        },
+        "multiselection":true,
+        "show_src_obj":false,
+        "allow_custom":false
+      }
+    },
+    {
+      "id": "output_binned_contig_name",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [""],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": ["KBaseMetagenomes.BinnedContigs"],
+        "is_output_name": true
+      }
+    }
+  ],
+  "parameter-groups": [
+    {
+      "id": "bin_merges",
+      "parameters": [
+        "new_bin_id",
+        "bin_to_merge"
+      ],
+      "optional": true,
+      "allow_multiple": true,
+      "with_border": false
+    }
+  ],
+  "behavior": {
+    "service-mapping": {
+      "url": "",
+      "name": "kb_go_express",
+      "method": "run_goexpress_app",
+      "input_mapping": [
+        {
+          "narrative_system_variable": "workspace",
+          "target_property": "workspace_name"
+        },
+        {
+          "input_parameter": "old_binned_contig_ref",
+          "target_type_transform": "resolved-ref",
+          "target_property": "old_binned_contig_ref"
+        },
+        {
+          "input_parameter": "bins_to_remove",
+          "target_property": "bins_to_remove"
+        },
+        {
+          "input_parameter": "bin_merges",
+          "target_property": "bin_merges"
+        },
+        {
+          "input_parameter": "output_binned_contig_name",
+          "target_property": "output_binned_contig_name"
+        }
+      ],
+      "output_mapping": [
+        {
+            "narrative_system_variable": "workspace",
+            "target_property": "wsName"
+        },
+        {
+            "service_method_output_path": [0,"new_binned_contig_ref"],
+            "target_property": "new_binned_contig_ref"
+        },
+        {
+            "service_method_output_path": [0, "report_name"],
+            "target_property": "report_name"
+        },
+        {
+            "service_method_output_path": [0, "report_ref"],
+            "target_property": "report_ref"
+        },
+        {
+            "constant_value": "16",
+            "target_property": "report_window_line_height"
+        }
+      ]
+    }
+  },
+  "job_id_output_field": "docker"
+}
