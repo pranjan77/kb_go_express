@@ -1,9 +1,9 @@
 {
   "ver": "1.0.0",
-  "authors": ["tgu2"],
+  "authors": ["pranjan77"],
   "contact": "help@kbase.us",
   "visible": true,
-  "categories": ["active","assembly","communities"],
+  "categories": ["active"],
   "widgets": {
     "input": null,
     "output": "no-display"
