@@ -1,153 +1,61 @@
 {
-    "ver": "0.0.1",
-    "authors": [
-        "pranjan77"
-    ],
-    "contact": "",
-    "categories": ["active"],
-    "widgets": {
-        "input": null,
-        "output": null
-    },
-    "parameters": [ 
-        {
-            "id": "expression_ref",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": ["KBaseFeatureValues.ExpressionMatrix"]
-            }
-        },
-
-        {
-            "id": "genome_ref",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": ["KBaseGenomes.Genome"]
-            }
-        },
-
-
-        {
-          "id" : "sample_id",
-          "optional" : false,
-          "advanced" : false,
-          "allow_multiple" : false,
-          "default_values" : [ "" ],
-          "field_type" : "textsubdata",
-          "textsubdata_options" : {
-          "subdata_selection": {
-
-          "parameter_id" : "expression_ref",
-          "subdata_included" : ["data/col_ids"],
-          "path_to_subdata": ["data,col_ids"],
-          "selection_id" : "col_ids"
+  "name" : "View Expression Heatmap In Feature Table",
+  "ver" : "1.0.0",
+  "authors" : [ "rsutormin", "msneddon", "psnovichkov", "marcin", "srividya22" ],
+  "contact" : "help@kbase.us",
+  "visble" : true,
+  "categories" : ["active", "expression"],
+  "app_type" : "viewer",
+  "widgets" : {
+    "input" : null,
+    "output" : "kbaseExpressionFeatureTableHeatmap"
+  },
+  "parameters" : [ {
+    "id" : "input_expression_matrix",
+    "optional" : false,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseFeatureValues.ExpressionMatrix" ]
+    }
+  } , {
+    "id" : "input_condition_ids",
+    "optional" : true,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "textsubdata",
+    "textsubdata_options" : {
+      "subdata_selection": {
+        "parameter_id" : "input_expression_matrix",
+        "subdata_included" : ["data/col_ids"],
+        "path_to_subdata": ["data","col_ids"]
       },
       "multiselection":true,
       "show_src_obj":false,
       "allow_custom":false
     }
-},
- {
-          "id" : "sample_id1",
-          "optional" : false,
-          "advanced" : false,
-          "allow_multiple" : false,
-          "default_values" : [ "" ],
-          "field_type" : "textsubdata",
-          "textsubdata_options" : {
-          "subdata_selection": {
-
-          "parameter_id" : "expression_ref",
-          "subdata_included" : ["data/col_ids"],
-          "path_to_subdata": ["data,col_ids"],
-          "selection_id" :"col_id"
-      },
-      "multiselection":true,
-      "show_src_obj":false,
-      "allow_custom":false
-    }
-},
-
-        {
-          "id" : "condition",
-          "optional" : false,
-          "advanced" : false,
-          "allow_multiple" : false,
-          "default_values" : [ "" ],
-          "field_type" : "text"
-        }
-    ],
-
-"parameter-groups": [
-      {
-        "id": "sample_n_conditions",
-        "parameters": ["condition", "sample_id"],
-        "optional": false,
-        "allow_multiple": true,
-        "with_border": true
-      }
+  }
 ],
-    "behavior": {
-        "service-mapping": {
-            "url": "",
-            "name": "kb_go_express",
-            "method": "run_goexpress_app",
-            "input_mapping": [
-                {
-                    "narrative_system_variable": "workspace",
-                    "target_property" : "workspace_name"
-                },
-                {
-                    "input_parameter" : "expression_ref",
-                    "target_type_transform": "resolved-ref",
-                    "target_property" : "expression_ref"
-                },
-                {
-                    "input_parameter": "sample_n_conditions",
-                     "target_property": "sample_n_conditions"
-                },
-                 {
-                    "input_parameter": "sample_id1",
-                     "target_property": "sample_id1"
-                },
-                {
-                    "input_parameter": "genome_ref",
-                    "target_type_transform": "resolved-ref",
-                    "target_property" : "genome_ref"
-                }
-            ],
-
-            "output_mapping" : [
-                {
-                      "service_method_output_path": [0, "result_directory"],
-                      "target_property": "result_directory"
-                },
-                {
-                      "service_method_output_path": [0,"report_name"],
-                      "target_property": "report_name"
-                    },
-                    {
-                      "service_method_output_path": [0,"report_ref"],
-                      "target_property": "report_ref"
-                    },
-                    {
-                      "constant_value": "16",
-                      "target_property": "report_window_line_height"
-                    },
-                    {
-                      "narrative_system_variable": "workspace",
-                      "target_property": "wsName"
-                    }
-                  ]
-                }
-              },
-              "job_id_output_field" : "docker"
-            }
+  "behavior" : {
+    "none" : {
+      "output_mapping" : [
+        {
+          "input_parameter": "input_expression_matrix",
+          "target_property": "expressionMatrixID"
+        },
+        {
+          "input_parameter": "input_condition_ids",
+          "target_property": "conditionIds",
+          "target_type_transform": "list<string>"
+        },
+        {
+          "narrative_system_variable": "workspace",
+          "target_property": "workspaceID"
+        }
+      ]
+    }
+  }
+}

@@ -1,67 +1,43 @@
 #
-# define display information
+# Define basic display information
 #
-name: Identify gene ontology signatures in gene expression data 
+name     : View Expression Matrix Heatmap In Feature Table
 
-tooltip: |
-     Identify and visualise robust gene ontology signatures through supervised classification of gene expression data
+tooltip  : |
+    Explore an Expression Matrix as a sortable heatmap of selected features.
 
-screenshots: []
-
-icon: icon.png
-
-#
-# define a set of similar methods that might be useful to the user
-#
+screenshots :
+    []
+    
+icon: kb_expr-yellow.png
 
 #
-# Configure the display and description of parameters
+# Define the set of other narrative methods that should be suggested to the user.
+#
+method-suggestions :
+    related :
+        []
+    next :
+        []
+
+
+#
+# Configure the display and description of the parameters
 #
 parameters :
-    expression_ref :
+    input_expression_matrix :
         ui-name : |
-            Expression matrix
-        short-hint : |
             Expression Matrix
-        long  : |
-            Expression matrix
-
-    condition:
-        ui-name : |
-            Condition Label
         short-hint : |
-            Short label for each sample in expression matrix. All replicates for the same condition must have same label.
-        long : |
-            Short label for each sample in expression matrix. All replicates for the same condition must have same label.
+            Select the Expression Matrix to vizualize
 
-    sample_id:
+    input_condition_ids :
         ui-name : |
-            Sample name
+            Conditions
         short-hint : |
-            Select the sample name in the expression matrix
-
-    sample_id1:
-        ui-name : |
-            Sample name1
-        short-hint : |
-            Select the sample name in the expression matrix
-
-    genome_ref:
-        ui-name : |
-            Genome annotated with gene ontology terms
-        short-hint : |
-            Genome annotated with gene ontology terms
-        long : |
-            Genome annotated with gene ontology terms
-
-
-parameter-groups :
-    sample_n_conditions :
-        ui-name : |
-             Sample and Condition
-        short-hint : |
-            For each sample, select the sample and provide the short label for condition. All replicates for the same condition must have same label.
-
+            Select the conditions to compare
 
 description : |
-    <p>Identify and visualise robust gene ontology signatures through supervised classification of gene expression data</p>
+    <p>View and explore expression data as a sortable heatmap. Features (genes) are displayed on each row with some summary statistics averaged across the selected conditions. The features can be sorted by those values. Each of the selected conditions is represented in a simple heatmap in the table. Mouse over the heatmap to view specific expression values.</p>
+
+    <p>The input is a .tsv file with "gene-id" listed in the A1 cell, the gene ids listed in the A column, the sample/conditions identifiers in the 1 row, and expression values that correspond to the gene-ids and sample throughout. For a comprehensive guide to formatting your expression data for import into KBase, see the <a href="http://kbase.us/data-upload-download-guide/expression-matrix/">Data Upload/Download Guide</a>.</p>
