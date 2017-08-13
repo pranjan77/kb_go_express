@@ -67,9 +67,12 @@
     }
 ],
 
-  "behavior" : {
-    "service-mapping" : {
-      "input_mapping": [
+ "behavior": {
+        "service-mapping": {
+            "url": "",
+            "name": "kb_go_express",
+            "method": "run_goexpress_app",
+            "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
                     "target_property" : "workspace_name"
@@ -83,25 +86,31 @@
                     "input_parameter": "sample_n_conditions",
                      "target_property": "sample_n_conditions"
                 }
-],
+            ],
 
-
-
-
-      "output_mapping" : [
-        {
-          "input_parameter": "input_expression_matrix",
-          "target_property": "expressionMatrixID"
-        },
-        {
-          "input_parameter": "sample_n_conditions",
-          "target_property": "sample_n_conditions"
-        },
-        {
-          "narrative_system_variable": "workspace",
-          "target_property": "workspaceID"
-        }
-      ]
-    }
-  }
+            "output_mapping" : [
+                {
+                      "service_method_output_path": [0, "result_directory"],
+                      "target_property": "result_directory"
+                },
+                {
+                      "service_method_output_path": [0,"report_name"],
+                      "target_property": "report_name"
+                    },
+                    {
+                      "service_method_output_path": [0,"report_ref"],
+                      "target_property": "report_ref"
+                    },
+                    {
+                      "constant_value": "16",
+                      "target_property": "report_window_line_height"
+                    },
+                    {
+                      "narrative_system_variable": "workspace",
+                      "target_property": "wsName"
+                    }
+                  ]
+                }
+              },
+              "job_id_output_field" : "docker"
 }
