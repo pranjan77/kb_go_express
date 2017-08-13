@@ -17,7 +17,7 @@
       "default_values": [""],
       "field_type": "text",
       "text_options": {
-        "valid_ws_types": ["KBaseMetagenomes.BinnedContigs"],
+        "valid_ws_types": ["KBaseFeatureValues.ExpressionMatrix"],
         "is_output_name": false
       }
     },
@@ -31,9 +31,9 @@
       "textsubdata_options" : {
         "subdata_selection": {
           "parameter_id" : "old_binned_contig_ref",
-          "subdata_included" : ["bins/[*]/bid"],
-          "path_to_subdata": ["bins"],
-          "selection_id": "bid"
+          "subdata_included" : ["data/col_ids"],
+          "path_to_subdata": ["data,col_ids"],
+          "selection_id": "col_ids"
         },
         "multiselection":true,
         "show_src_obj":false,
