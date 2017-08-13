@@ -48,8 +48,7 @@
         },
         {
           "input_parameter": "input_condition_ids",
-          "target_property": "conditionIds",
-          "target_type_transform": "list<string>"
+          "target_property": "conditionIds"
         },
         {
           "narrative_system_variable": "workspace",
