@@ -47,7 +47,7 @@
 
           "parameter_id" : "expression_ref",
           "subdata_included" : ["data/col_ids"],
-          "path_to_subdata": ["data,col_ids"]
+          "path_to_subdata": ["data;col_ids"]
       },
       "multiselection":true,
       "show_src_obj":false,
