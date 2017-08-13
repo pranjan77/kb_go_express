@@ -94,10 +94,6 @@
                     "input_parameter": "sample_n_conditions",
                      "target_property": "sample_n_conditions"
                 },
-                 {
-                    "input_parameter": "sample_id1",
-                     "target_property": "sample_id1"
-                },
                 {
                     "input_parameter": "genome_ref",
                     "target_type_transform": "resolved-ref",
