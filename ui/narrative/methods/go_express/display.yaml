@@ -1,10 +1,10 @@
 #
 # Define basic display information
 #
-name     : View Expression Matrix Heatmap In Feature Table
+name     : Identify gene ontology signatures in gene expression data 
 
 tooltip  : |
-    Explore an Expression Matrix as a sortable heatmap of selected features.
+    Identify and visualise robust gene ontology signatures through supervised classification of gene expression data
 
 screenshots :
     []
@@ -25,29 +25,29 @@ method-suggestions :
 # Configure the display and description of the parameters
 #
 parameters :
-    input_expression_matrix :
+    expression_ref :
         ui-name : |
             Expression Matrix
         short-hint : |
-            Select the Expression Matrix to vizualize
+            Select the Expression Matrix 
 
     input_condition_ids :
         ui-name : |
             Conditions
         short-hint : |
-            Select the conditions to compare
+            Select the conditions name
 
     input_condition_ids_samples :
         ui-name : |
             Conditions samples
         short-hint : |
-            Select the conditions to compare
+            Select the sample of conditions 
 
 
 parameter-groups :
-    bin_merges :
-        ui-name : Select Bins to merge
-        short-hint : Select sets of bins to merge into one
+    sample_n_conditions :
+        ui-name : Sample and Condition
+        short-hint : For each sample, select the sample and provide the short label for condition. All replicates for the same condition must have same label.
 
 
 description : |

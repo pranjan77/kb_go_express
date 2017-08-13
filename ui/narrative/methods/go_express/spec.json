@@ -1,26 +1,29 @@
 {
-  "name" : "View Expression Heatmap In Feature Table",
+  "name" : "Identify gene ontology signatures in gene expression data",
   "ver" : "1.0.0",
-  "authors" : [ "rsutormin", "msneddon", "psnovichkov", "marcin", "srividya22" ],
+  "authors" : [ "pranjan77" ],
   "contact" : "help@kbase.us",
   "visble" : true,
-  "categories" : ["active", "expression"],
-  "app_type" : "viewer",
+  "categories" : ["active"],
   "widgets" : {
     "input" : null,
-    "output" : "kbaseExpressionFeatureTableHeatmap"
+    "output" : "no-display"
   },
+  
   "parameters" : [ {
-    "id" : "input_expression_matrix",
-    "optional" : false,
-    "advanced" : false,
-    "allow_multiple" : false,
-    "default_values" : [ "" ],
-    "field_type" : "text",
-    "text_options" : {
-      "valid_ws_types" : [ "KBaseFeatureValues.ExpressionMatrix" ]
-    }
-  } ,
+
+
+            "id": "expression_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": ["KBaseFeatureValues.ExpressionMatrix"]
+            }
+        },
+
 
 {
       "id": "input_condition_ids_samples",
@@ -53,7 +56,7 @@
 
 "parameter-groups": [
     {
-      "id": "bin_merges",
+      "id": "sample_n_conditions",
       "parameters": [
         "input_condition_ids_samples",
         "input_condition_ids"
@@ -63,17 +66,36 @@
       "with_border": false
     }
 ],
-  
+
   "behavior" : {
-    "none" : {
+    "service-mapping" : {
+      "input_mapping": [
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property" : "workspace_name"
+                },
+                {
+                    "input_parameter" : "expression_ref",
+                    "target_type_transform": "resolved-ref",
+                    "target_property" : "expression_ref"
+                },
+                {
+                    "input_parameter": "sample_n_conditions",
+                     "target_property": "sample_n_conditions"
+                }
+],
+
+
+
+
       "output_mapping" : [
         {
           "input_parameter": "input_expression_matrix",
           "target_property": "expressionMatrixID"
         },
         {
-          "input_parameter": "input_condition_ids",
-          "target_property": "conditionIds"
+          "input_parameter": "sample_n_conditions",
+          "target_property": "sample_n_conditions"
         },
         {
           "narrative_system_variable": "workspace",
