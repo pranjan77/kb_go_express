@@ -103,11 +103,17 @@ class kb_go_expressTest(unittest.TestCase):
         #y = exp_util.download_expression(DownloadExpressionParams)
         #print y
 
+        params = {
+            'expression_ref':'7608/3/15',
+            'genome_ref':'7608/5/1',
+            'sample_n_conditions': [ ['WT',['WT1', 'WT2']], 
+                                     ['HY5',['HY51', 'HY52']]
+                                    ],
+            'sample_id1':['WT', 'HY5'],
+            'num_permutations': 100
+        }
 
-
-
-
-
+        ret = self.getImpl().run_goexpress_app(self.getContext(), params)
 
 
 

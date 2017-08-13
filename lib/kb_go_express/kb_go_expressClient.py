@@ -42,8 +42,10 @@ class kb_go_express(object):
            ExpressionSet object reference condition1: First condition
            condition2: Second condition Number of permutations:
            num_permutations optional params:) -> structure: parameter
-           "workspace_name" of String, parameter "expressionset_ref" of type
-           "obj_ref" (Reference), parameter "condition_label" of String,
+           "workspace_name" of String, parameter "expression_ref" of type
+           "obj_ref" (Reference), parameter "genome_ref" of type "obj_ref"
+           (Reference), parameter "sample_id1" of list of String, parameter
+           "sample_n_conditions" of list of mapping from String to String,
            parameter "num_permutations" of Long, parameter
            "fold_change_cutoff" of Double
         :returns: instance of type "GOExpressResult" (result_directory:

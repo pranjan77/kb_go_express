@@ -123,8 +123,10 @@ $params is a kb_go_express.GOExpressInput
 $returnVal is a kb_go_express.GOExpressResult
 GOExpressInput is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
-	expressionset_ref has a value which is a kb_go_express.obj_ref
-	condition_label has a value which is a string
+	expression_ref has a value which is a kb_go_express.obj_ref
+	genome_ref has a value which is a kb_go_express.obj_ref
+	sample_id1 has a value which is a reference to a list where each element is a string
+	sample_n_conditions has a value which is a reference to a list where each element is a reference to a hash where the key is a string and the value is a string
 	num_permutations has a value which is an int
 	fold_change_cutoff has a value which is a float
 obj_ref is a string
@@ -143,8 +145,10 @@ $params is a kb_go_express.GOExpressInput
 $returnVal is a kb_go_express.GOExpressResult
 GOExpressInput is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
-	expressionset_ref has a value which is a kb_go_express.obj_ref
-	condition_label has a value which is a string
+	expression_ref has a value which is a kb_go_express.obj_ref
+	genome_ref has a value which is a kb_go_express.obj_ref
+	sample_id1 has a value which is a reference to a list where each element is a string
+	sample_n_conditions has a value which is a reference to a list where each element is a reference to a hash where the key is a string and the value is a string
 	num_permutations has a value which is an int
 	fold_change_cutoff has a value which is a float
 obj_ref is a string
@@ -388,8 +392,10 @@ Number of permutations: num_permutations
 <pre>
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
-expressionset_ref has a value which is a kb_go_express.obj_ref
-condition_label has a value which is a string
+expression_ref has a value which is a kb_go_express.obj_ref
+genome_ref has a value which is a kb_go_express.obj_ref
+sample_id1 has a value which is a reference to a list where each element is a string
+sample_n_conditions has a value which is a reference to a list where each element is a reference to a hash where the key is a string and the value is a string
 num_permutations has a value which is an int
 fold_change_cutoff has a value which is a float
 
@@ -401,8 +407,10 @@ fold_change_cutoff has a value which is a float
 
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
-expressionset_ref has a value which is a kb_go_express.obj_ref
-condition_label has a value which is a string
+expression_ref has a value which is a kb_go_express.obj_ref
+genome_ref has a value which is a kb_go_express.obj_ref
+sample_id1 has a value which is a reference to a list where each element is a string
+sample_n_conditions has a value which is a reference to a list where each element is a reference to a hash where the key is a string and the value is a string
 num_permutations has a value which is an int
 fold_change_cutoff has a value which is a float
 

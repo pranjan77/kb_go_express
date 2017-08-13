@@ -2,6 +2,7 @@
 package us.kbase.kbgoexpress;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -28,67 +29,103 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "expressionset_ref",
-    "condition_label",
+    "expression_ref",
+    "genome_ref",
+    "sample_id1",
+    "sample_n_conditions",
     "num_permutations",
     "fold_change_cutoff"
 })
 public class GOExpressInput {
 
     @JsonProperty("workspace_name")
-    private String workspaceName;
-    @JsonProperty("expressionset_ref")
-    private String expressionsetRef;
-    @JsonProperty("condition_label")
-    private String conditionLabel;
+    private java.lang.String workspaceName;
+    @JsonProperty("expression_ref")
+    private java.lang.String expressionRef;
+    @JsonProperty("genome_ref")
+    private java.lang.String genomeRef;
+    @JsonProperty("sample_id1")
+    private List<String> sampleId1;
+    @JsonProperty("sample_n_conditions")
+    private List<Map<String, String>> sampleNConditions;
     @JsonProperty("num_permutations")
     private Long numPermutations;
     @JsonProperty("fold_change_cutoff")
     private Double foldChangeCutoff;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     @JsonProperty("workspace_name")
-    public String getWorkspaceName() {
+    public java.lang.String getWorkspaceName() {
         return workspaceName;
     }
 
     @JsonProperty("workspace_name")
-    public void setWorkspaceName(String workspaceName) {
+    public void setWorkspaceName(java.lang.String workspaceName) {
         this.workspaceName = workspaceName;
     }
 
-    public GOExpressInput withWorkspaceName(String workspaceName) {
+    public GOExpressInput withWorkspaceName(java.lang.String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
 
-    @JsonProperty("expressionset_ref")
-    public String getExpressionsetRef() {
-        return expressionsetRef;
+    @JsonProperty("expression_ref")
+    public java.lang.String getExpressionRef() {
+        return expressionRef;
     }
 
-    @JsonProperty("expressionset_ref")
-    public void setExpressionsetRef(String expressionsetRef) {
-        this.expressionsetRef = expressionsetRef;
+    @JsonProperty("expression_ref")
+    public void setExpressionRef(java.lang.String expressionRef) {
+        this.expressionRef = expressionRef;
     }
 
-    public GOExpressInput withExpressionsetRef(String expressionsetRef) {
-        this.expressionsetRef = expressionsetRef;
+    public GOExpressInput withExpressionRef(java.lang.String expressionRef) {
+        this.expressionRef = expressionRef;
         return this;
     }
 
-    @JsonProperty("condition_label")
-    public String getConditionLabel() {
-        return conditionLabel;
+    @JsonProperty("genome_ref")
+    public java.lang.String getGenomeRef() {
+        return genomeRef;
     }
 
-    @JsonProperty("condition_label")
-    public void setConditionLabel(String conditionLabel) {
-        this.conditionLabel = conditionLabel;
+    @JsonProperty("genome_ref")
+    public void setGenomeRef(java.lang.String genomeRef) {
+        this.genomeRef = genomeRef;
     }
 
-    public GOExpressInput withConditionLabel(String conditionLabel) {
-        this.conditionLabel = conditionLabel;
+    public GOExpressInput withGenomeRef(java.lang.String genomeRef) {
+        this.genomeRef = genomeRef;
+        return this;
+    }
+
+    @JsonProperty("sample_id1")
+    public List<String> getSampleId1() {
+        return sampleId1;
+    }
+
+    @JsonProperty("sample_id1")
+    public void setSampleId1(List<String> sampleId1) {
+        this.sampleId1 = sampleId1;
+    }
+
+    public GOExpressInput withSampleId1(List<String> sampleId1) {
+        this.sampleId1 = sampleId1;
+        return this;
+    }
+
+    @JsonProperty("sample_n_conditions")
+    public List<Map<String, String>> getSampleNConditions() {
+        return sampleNConditions;
+    }
+
+    @JsonProperty("sample_n_conditions")
+    public void setSampleNConditions(List<Map<String, String>> sampleNConditions) {
+        this.sampleNConditions = sampleNConditions;
+    }
+
+    public GOExpressInput withSampleNConditions(List<Map<String, String>> sampleNConditions) {
+        this.sampleNConditions = sampleNConditions;
         return this;
     }
 
@@ -123,18 +160,18 @@ public class GOExpressInput {
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(String name, Object value) {
+    public void setAdditionalProperties(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
     @Override
-    public String toString() {
-        return ((((((((((((("GOExpressInput"+" [workspaceName=")+ workspaceName)+", expressionsetRef=")+ expressionsetRef)+", conditionLabel=")+ conditionLabel)+", numPermutations=")+ numPermutations)+", foldChangeCutoff=")+ foldChangeCutoff)+", additionalProperties=")+ additionalProperties)+"]");
+    public java.lang.String toString() {
+        return ((((((((((((((((("GOExpressInput"+" [workspaceName=")+ workspaceName)+", expressionRef=")+ expressionRef)+", genomeRef=")+ genomeRef)+", sampleId1=")+ sampleId1)+", sampleNConditions=")+ sampleNConditions)+", numPermutations=")+ numPermutations)+", foldChangeCutoff=")+ foldChangeCutoff)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

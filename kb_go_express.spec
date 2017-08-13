@@ -19,9 +19,6 @@ module kb_go_express {
   	/*
         required params:
         workspace_name: Name of the workspace
-        expressionset_ref: ExpressionSet object reference
-        condition1: First condition 
-        condition2: Second condition
         Number of permutations: num_permutations
 
     	optional params:
@@ -35,7 +32,6 @@ module kb_go_express {
         list<string> sample_id1;
         list<mapping<string, string>> sample_n_conditions;
         int num_permutations;
-        float fold_change_cutoff;
     } GOExpressInput;
 
 
