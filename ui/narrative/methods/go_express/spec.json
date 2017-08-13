@@ -20,7 +20,18 @@
     "text_options" : {
       "valid_ws_types" : [ "KBaseFeatureValues.ExpressionMatrix" ]
     }
-  } , {
+  } ,
+
+{
+      "id": "input_condition_ids_samples",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [""],
+      "field_type": "text"
+},
+
+   {
     "id" : "input_condition_ids",
     "optional" : true,
     "advanced" : false,
@@ -39,6 +50,20 @@
     }
   }
 ],
+
+"parameter-groups": [
+    {
+      "id": "bin_merges",
+      "parameters": [
+        "input_condition_ids",
+        "bin_to_merge"
+      ],
+      "optional": true,
+      "allow_multiple": true,
+      "with_border": false
+    }
+],
+  
   "behavior" : {
     "none" : {
       "output_mapping" : [

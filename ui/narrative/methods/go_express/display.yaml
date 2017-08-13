@@ -37,6 +37,19 @@ parameters :
         short-hint : |
             Select the conditions to compare
 
+    input_condition_ids_samples :
+        ui-name : |
+            Conditions samples
+        short-hint : |
+            Select the conditions to compare
+
+
+parameter-groups :
+    bin_merges :
+        ui-name : Select Bins to merge
+        short-hint : Select sets of bins to merge into one
+
+
 description : |
     <p>View and explore expression data as a sortable heatmap. Features (genes) are displayed on each row with some summary statistics averaged across the selected conditions. The features can be sorted by those values. Each of the selected conditions is represented in a simple heatmap in the table. Mouse over the heatmap to view specific expression values.</p>
 
