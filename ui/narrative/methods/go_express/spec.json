@@ -49,7 +49,7 @@
           "subdata_included" : ["data/col_ids"],
           "path_to_subdata": ["data,col_ids"]
       },
-      "multiselection":false,
+      "multiselection":true,
       "show_src_obj":false,
       "allow_custom":false
     }
@@ -64,7 +64,7 @@
         }
     ],
 
-    "parameter-groups": [
+"parameter-groups": [
       {
         "id": "sample_n_conditions",
         "parameters": ["condition", "sample_id"],
