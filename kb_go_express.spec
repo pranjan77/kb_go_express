@@ -30,8 +30,10 @@ module kb_go_express {
 
    typedef structure {
         string workspace_name;
-        obj_ref expressionset_ref;
-        string condition_label;
+        obj_ref expression_ref;
+        obj_ref genome_ref;
+        list<string> sample_id1;
+        list<mapping<string, string>> sample_n_conditions;
         int num_permutations;
         float fold_change_cutoff;
     } GOExpressInput;

@@ -103,33 +103,6 @@ class kb_go_expressTest(unittest.TestCase):
         #y = exp_util.download_expression(DownloadExpressionParams)
         #print y
 
-        expression_object = '6878/413/15'
-
-        df = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
-
-        expression_matrix_data = df.get_objects({'object_refs':
-                                                  [expression_object]})['data'][0]['data']
-        #print expression_matrix_data
-
-        expression_matrix_TSV = []
-        col_ids = expression_matrix_data['data']['col_ids']
-        ids =  "\t". join ([str(x) for x in col_ids])
-        print ids
-        expression_matrix_TSV.append(" " + "\t" + ids + "\n")
-
-        feature_list = expression_matrix_data['data']['row_ids']
-        values = expression_matrix_data['data']['values']
-
-        for feature, value in zip (feature_list, values):
-            row_value =  "\t".join(map(str, value)) 
-            expression_matrix_TSV.append (feature + "\t" + row_value + "\n")
-
-
-        textstring_TSV = "".join (expression_matrix_TSV)
-        file = open('/kb/module/work/testfile2.txt','w')  
-        file.write(textstring_TSV)
-        file.close()
-
 
 
 

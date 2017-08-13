@@ -22,7 +22,7 @@ class kb_go_express:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "git@github.com:pranjan77/kb_go_express.git"
-    GIT_COMMIT_HASH = "d0e5bf3e79ff20df2af969fd5cc29106cef154b5"
+    GIT_COMMIT_HASH = "c92316728321c79a9eefbf20a7a832c37755107b"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -44,8 +44,10 @@ class kb_go_express:
            ExpressionSet object reference condition1: First condition
            condition2: Second condition Number of permutations:
            num_permutations optional params:) -> structure: parameter
-           "workspace_name" of String, parameter "expressionset_ref" of type
-           "obj_ref" (Reference), parameter "condition_label" of String,
+           "workspace_name" of String, parameter "expression_ref" of type
+           "obj_ref" (Reference), parameter "genome_ref" of type "obj_ref"
+           (Reference), parameter "sample_id1" of list of String, parameter
+           "sample_n_conditions" of list of mapping from String to String,
            parameter "num_permutations" of Long, parameter
            "fold_change_cutoff" of Double
         :returns: instance of type "GOExpressResult" (result_directory:
@@ -58,7 +60,13 @@ class kb_go_express:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN run_goexpress_app
-        x=ExpressionUtils()
+        #x=ExpressionUtils()
+
+        print "printing params"
+        print params
+        returnVal={}
+
+
         #END run_goexpress_app
 
         # At some point might do deeper type checking...

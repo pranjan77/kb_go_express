@@ -40,6 +40,12 @@ parameters :
         short-hint : |
             Select the sample name in the expression matrix
 
+    sample_id1:
+        ui-name : |
+            Sample name1
+        short-hint : |
+            Select the sample name in the expression matrix
+
     genome_ref:
         ui-name : |
             Genome annotated with gene ontology terms
