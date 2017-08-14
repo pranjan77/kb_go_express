@@ -66,8 +66,8 @@
           "subdata_selection": {
 
           "parameter_id" : "expression_ref",
-          "subdata_included" : ["data/col_ids"],
-          "path_to_subdata": ["data;col_ids"]
+          "subdata_included" : ["data"],
+          "path_to_subdata": ["col_ids"]
       },
       "multiselection":true,
       "show_src_obj":false,
