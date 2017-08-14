@@ -67,7 +67,7 @@
 
           "parameter_id" : "expression_ref",
           "subdata_included" : ["data/col_ids"],
-          "path_to_subdata": ["col_ids"],
+          "path_to_subdata": ["col_ids"]
     
       
       },
