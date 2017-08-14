@@ -115,7 +115,7 @@
                 },
                  {
                     "input_parameter": "sample_id1",
-                     "target_property": "sample_id1",
+                     "target_property": "sample_id1"
                 },
                 {
                     "input_parameter": "genome_ref",
