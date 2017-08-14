@@ -67,7 +67,7 @@
 
           "parameter_id" : "expression_ref",
           "subdata_included" : ["data/col_ids"],
-          "path_to_subdata": ["data,col_ids"]
+          "path_to_subdata": ["data"]
       },
       "multiselection":true,
       "show_src_obj":false,
@@ -116,7 +116,6 @@
                  {
                     "input_parameter": "sample_id1",
                      "target_property": "sample_id1",
-                     "target_type_transform": "list<string>"
                 },
                 {
                     "input_parameter": "genome_ref",
