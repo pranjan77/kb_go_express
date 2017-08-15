@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
-from ExpressionUtils.ExpressionUtilsClient import ExpressionUtils
+import os
+import json
+from kb_go_express.Utils.GOExpressUtil import GOExpressUtil
 
 #END_HEADER
 
@@ -31,6 +33,9 @@ class kb_go_express:
     # be found
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
+        self.config = config
+        self.config['SDK_CALLBACK_URL'] = os.environ['SDK_CALLBACK_URL']
+        self.config['KB_AUTH_TOKEN'] = os.environ['KB_AUTH_TOKEN']
         #END_CONSTRUCTOR
         pass
 
@@ -64,7 +69,13 @@ class kb_go_express:
 
         print "printing params"
         print params
+
+        go_express_runner = GOExpressUtil(self.config)
+        returnVal = go_express_runner.run_goexpress_app(params)
+
+
         returnVal={}
+
 
 
         #END run_goexpress_app

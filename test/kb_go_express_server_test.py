@@ -103,12 +103,21 @@ class kb_go_expressTest(unittest.TestCase):
         #y = exp_util.download_expression(DownloadExpressionParams)
         #print y
 
+
+
+
+
+
         params = {
-            'expression_ref':'7608/3/15',
-            'genome_ref':'7608/5/1',
-            'sample_n_conditions': [ ['WT',['WT1', 'WT2']], 
-                                     ['HY5',['HY51', 'HY52']]
-                                    ],
+            'expression_ref':'7673/3/1',
+            'genome_ref':'7673/2/3',
+            'sample_n_conditions': [{'condition': 'auxiliary_bud',
+                        'sample_id': ['717c Control A_Axillary bud_1', 
+                                    '717c Control A_Axillary bud_2', 
+                                    '717c Control A_Axillary bud_3']},
+                        {'condition': 'shoot_tip', 
+                        'sample_id': ['717c Control_A_Shoot tip_1', 
+                                      '717c Control_A_Shoot tip_2']}],
             'sample_id1':['WT', 'HY5'],
             'num_permutations': 100
         }
