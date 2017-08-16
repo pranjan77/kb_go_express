@@ -21,6 +21,41 @@ RUN pip install cffi --upgrade \
     && pip install requests --upgrade \
     && pip install 'requests[security]' --upgrade
 
+
+
+RUN mkdir /kb/deployment/bin/rlibs
+
+#RUN sudo apt-get remove r-base && \
+#	sudo apt-get remove r-base-devel && \
+#	sudo apt-get remove r-base-core && \
+#	sudo apt-get clean && \
+#	sudo apt-get autoclean && \
+#	sudo apt-get install r-base=3.0.2-1precise0
+
+
+
+RUN CODENAME=`grep CODENAME /etc/lsb-release | cut -c 18-` && \
+    echo "deb http://cran.rstudio.com/bin/linux/ubuntu $CODENAME/" >> /etc/apt/sources.list && \
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
+    sudo apt-get update && \
+    yes '' | sudo apt-get -y install r-base && \
+	 echo 'install.packages(c("devtools"), lib="/kb/deployment/lib", repos="http://cran.rstudio.com")\n \
+	 .libPaths( c( .libPaths(), "/kb/deployment/lib") ) \n \
+	 library(devtools) \n \
+	 install_github("kevinrue/GOexpress")\n' > /kb/deployment/bin/rlibs/packages.R && \
+	Rscript /kb/deployment/bin/rlibs/packages.R
+
+
+#RUN wget https://cran.r-project.org/src/base/R-3/R-3.4.1.tar.gz && \
+#    tar -zxf R-3.4.1.tar.gz && cd R-3.4.1 && \
+#    ./configure --with-libpng --with-jpeglib --with-x=no && \
+#    make && make pdf && make info && make install && make install-info && make install-pdf &&\
+#    echo 'install.packages(c("gplots", "optparse", ""), lib="/kb/deployment/lib", repos="http://cran.rstudio.com", dependencies=TRUE)\nsource("http://bioconductor.org/biocLite.R")\nbiocLite(c("GOexpress", "Biobase"), dependencies = TRUE)' > /kb/deployment/bin/rlibs/packages.R && \
+#	Rscript /kb/deployment/bin/rlibs/packages.R
+
+
+
+
 # -----------------------------------------
 
 COPY ./ /kb/module

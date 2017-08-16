@@ -145,7 +145,7 @@ class GOExpressUtil:
 
     def _generate_supporting_files(self, result_directory,  
                                    feature_id_go_id_list_map, genome_ref,
-                                    genome_features, ontology_hash):
+                                    genome_features, ontology_hash, params):
                  
         supporting_files = list()
 
@@ -153,12 +153,27 @@ class GOExpressUtil:
         go_id_description_file = os.path.join(result_directory, 'go_id_description.txt')
         feature_ids_file = os.path.join(result_directory, 'feature_ids_description.txt')
         genome_info_file = os.path.join(result_directory, 'genome_info.txt')
+        expression_matrix_file = os.path.join(result_directory, 'expression_matrix.txt')
+        condition_sample_relationship_file = os.path.join(result_directory, 'condition_sample_relationship.txt')
+
+
+        file_list = {
+            "feature_id_go_ids_map_file": condition_sample_relationship_file,
+            "go_id_description_file" :go_id_description_file,
+            "feature_ids_file": feature_ids_file,
+            "genome_info_file": genome_info_file,
+            "expression_matrix_file" : expression_matrix_file,
+            "condition_sample_relationship_file" : condition_sample_relationship_file
+        }
        
 
         supporting_files.append(feature_id_go_ids_map_file)
         supporting_files.append(go_id_description_file)
         supporting_files.append(feature_ids_file)
         supporting_files.append(genome_info_file)
+        supporting_files.append(expression_matrix_file)
+        supporting_files.append(condition_sample_relationship_file)
+
        
         total_feature_ids = feature_id_go_id_list_map.keys()
         feature_ids_with_feature = []
@@ -168,7 +183,7 @@ class GOExpressUtil:
         genome_name = self.ws.get_object_info3({'objects': 
                                                     [{'ref': genome_ref}]})['infos'][0][1]
 
-        print genome_info_file
+        #print genome_info_file
         with open(genome_info_file, 'wb') as genome_info_file:
                 genome_info_file.write('genome_name: {}\n'.format(genome_name))
                 genome_info_file.write('features: {}\n'.format(len(total_feature_ids)))
@@ -215,6 +230,17 @@ class GOExpressUtil:
                 if ontology_terms:
                     feature_ids_file.write('{}\t{}\n'.format(feature_id, feature_func))
 
+        expression_matrix_file = self._expression_object_to_tsv(params['expression_ref'],
+                                                                expression_matrix_file)  
+                                                                
+        #condition_sample_relationship_file = self._write_condition_sample_relationship(params['sample_n_conditions'])          
+
+        sample_n_conditions = params['sample_n_conditions']
+
+        with open(condition_sample_relationship_file, 'wb') as condition_sample_relationship_file:
+          for conditions in sample_n_conditions:
+             condition_sample_relationship_file.write ('{}:{}\n'.format(conditions['condition'],
+                                                                ",".join(conditions['sample_id'])))
 
         result_file = os.path.join(result_directory, 'supporting_files.zip')
         with zipfile.ZipFile(result_file, 'w', zipfile.ZIP_DEFLATED, allowZip64=True) as zip_file:
@@ -223,29 +249,48 @@ class GOExpressUtil:
                                os.path.basename(supporting_file))
 
         return [{'path': result_file,
-                      'name': os.path.basename(result_file),
-                      'label': os.path.basename(result_file),
-                      'description': 'GOexpress supporting files'}]
+                'name': os.path.basename(result_file),
+                'label': os.path.basename(result_file),
+                'description': 'GOexpress supporting files',
+                'file_list': file_list
+                }]
 
 
 
+    def _run_command(self, command):
+        log('Start executing command:\n{}'.format(command))
+        pipe = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+        output = pipe.communicate()[0]
+        exitCode = pipe.returncode
 
-    # def _run_command(self, command):
-    #     """
-    #     _run_command: run command and print result
-    #     """
-    #         log('Start executing command:\n{}'.format(command))
-    #         pipe = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
-    #         output = pipe.communicate()[0]
-    #         exitCode = pipe.returncode
+        if (exitCode == 0):
+            log('Executed commend:\n{}\n'.format(command) +
+            'Exit Code: {}\nOutput:\n{}'.format(exitCode, output))
+        else:
+            error_msg = 'Error running commend:\n{}\n'.format(command)
+            error_msg += 'Exit Code: {}\nOutput:\n{}'.format(exitCode, output)
+            raise ValueError(error_msg)
 
-    #         if (exitCode == 0):
-    #             log('Executed commend:\n{}\n'.format(command) +
-    #                 'Exit Code: {}\nOutput:\n{}'.format(exitCode, output))
-    #         else:
-    #             error_msg = 'Error running commend:\n{}\n'.format(command)
-    #             error_msg += 'Exit Code: {}\nOutput:\n{}'.format(exitCode, output)
-    #             raise ValueError(error_msg)
+    def _generate_goexpress_command(self, result_directory, 
+                                        supporting_files, params):
+        r = supporting_files[0]['file_list']
+        result_files = os.listdir(result_directory)
+        rcmd_list = ['Rscript', os.path.join(os.path.dirname(__file__), 'GOExpress.R')]
+        rcmd_list.extend(['--outDir', result_directory])
+        rcmd_list.extend(['--expMatrix', r['expression_matrix_file'] ])
+        rcmd_list.extend(['--gi2go', r['feature_id_go_ids_map_file'] ])
+        rcmd_list.extend(['--geneDes', r['feature_ids_file'] ])
+        rcmd_list.extend(['--goDes', r['go_id_description_file'] ])
+        rcmd_list.extend(['--cond', r['condition_sample_relationship_file'] ])
+        rcmd_list.extend(['--Nper', params['num_permutations'] ])
+
+        rcmd_str = " ".join(str(x) for x in rcmd_list)
+
+        return rcmd_str
+
+#        print rcmd_str
+#        self._run_command(rcmd_str)
+
 
 
     def __init__(self, config):
@@ -274,32 +319,14 @@ class GOExpressUtil:
         ontology_hash = self._get_ontology_hash()
 
         
-        output = self._generate_supporting_files(result_directory, 
+        supporting_files = self._generate_supporting_files(result_directory, 
                                                 feature_id_go_id_list_map, 
                                                 params['genome_ref'],
-                                                genome_features, ontology_hash)
+                                                genome_features, ontology_hash, params)
 
-    
-
- 
-
-
-
-
-        #expression_matrix_file = self._expression_object_to_tsv(params['expression_ref'],
-        #                                                        expression_matrix_file)
-
-       # condition_sample_relationship_file = self._write_condition_sample_relationship(params['sample_n_conditions'],
-         #                                                                             condition_sample_relationship_file)
-        #gene_ontology_data = 
-
-
-
-            
-
-
-        
-
+        rcmd_str = self._generate_goexpress_command(result_directory, 
+                                        supporting_files, params)
+        print rcmd_str
 
 
 
