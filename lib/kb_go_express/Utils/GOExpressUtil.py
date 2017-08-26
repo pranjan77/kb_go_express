@@ -341,6 +341,7 @@ class GOExpressUtil:
 
     def _run_goexpress_command(self, result_directory, 
                                         supporting_files, params):
+        params['num_permutations'] = 1000
         r = supporting_files[0]['file_list']
         result_files = os.listdir(result_directory)
         rcmd_list = ['Rscript', os.path.join(os.path.dirname(__file__), 'GOExpress.R')]
