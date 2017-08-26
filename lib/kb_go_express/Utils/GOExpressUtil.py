@@ -463,8 +463,11 @@ class GOExpressUtil:
         output_html_files = self._generate_goexpress_report (result_directory, params)
         print output_html_files
 
-        outx =  self._generate_report_from_dir(output_html_files, supporting_files, params)
-        print outx
+        returnVal = {'result_directory': result_directory}
+        report_output =  self._generate_report_from_dir(output_html_files, supporting_files, params)
+        returnVal.update(report_output)
+
+        return returnVal
         
 
 

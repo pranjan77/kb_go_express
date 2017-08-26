@@ -108,20 +108,36 @@ class kb_go_expressTest(unittest.TestCase):
 
 
 
-        params = {
-            'expression_ref':'7673/3/1',
-            'genome_ref':'7673/2/3',
-            'sample_n_conditions': [{'condition': 'auxiliary_bud',
-                        'sample_id': ['717c Control A_Axillary bud_1', 
-                                    '717c Control A_Axillary bud_2', 
-                                    '717c Control A_Axillary bud_3']},
-                        {'condition': 'shoot_tip', 
-                        'sample_id': ['717c Control_A_Shoot tip_1', 
-                                      '717c Control_A_Shoot tip_2']}],
-            'sample_id1':['WT', 'HY5'],
-            'workspace_name' : 'pranjan77:narrative_1502741003124',
-            'num_permutations': 100
-        }
+
+        params = {"sample_id1": "717c Control A_Axillary bud_1,717c Control A_Axillary bud_2", 
+                    "workspace_name": "pranjan77:narrative_1502741003124",
+                    "genome_ref": "7673/2/3", 
+                    "expression_ref": "7673/3/1",
+                    "sample_n_conditions": [{"condition": "aux_bud",
+                     "sample_id": ["717c Control A_Axillary bud_1", 
+                     "717c Control A_Axillary bud_2",
+                      "717c Control A_Axillary bud_3"]}, 
+                      {"condition": "shoot_tip", 
+                      "sample_id": ["717c Control_A_Shoot tip_1", 
+                      "717c Control_A_Shoot tip_2"]}]
+                      }
+
+
+
+ #       params = {
+ #           'expression_ref':'7673/3/1',
+ #           'genome_ref':'7673/2/3',
+ #           'sample_n_conditions': [{'condition': 'auxiliary_bud',
+ #                       'sample_id': ['717c Control A_Axillary bud_1', 
+ #                                   '717c Control A_Axillary bud_2', 
+ #                                   '717c Control A_Axillary bud_3']},
+ #                       {'condition': 'shoot_tip', 
+ #                       'sample_id': ['717c Control_A_Shoot tip_1', 
+ #                                     '717c Control_A_Shoot tip_2']}],
+ #           'sample_id1':['WT', 'HY5'],
+ #           'workspace_name' : 'pranjan77:narrative_1502741003124',
+ #           'num_permutations': 100
+ #       }
 
         ret = self.getImpl().run_goexpress_app(self.getContext(), params)
 

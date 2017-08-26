@@ -74,9 +74,6 @@ class kb_go_express:
         returnVal = go_express_runner.run_goexpress_app(params)
 
 
-        returnVal={}
-
-
 
         #END run_goexpress_app
 
