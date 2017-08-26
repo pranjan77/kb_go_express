@@ -399,6 +399,11 @@ class GOExpressUtil:
         script_file = os.path.join(os.path.dirname(__file__), "script.js")
         shutil.copy(script_file, report_directory)
 
+        d3_js = os.path.join(os.path.dirname(__file__),"d3.v3.min.js")
+        shutil.copy(d3_js, report_directory)
+
+
+
         csv_path =  os.path.join(result_directory, "AllCombined.csv")
         json_path = os.path.join(result_directory, "out.json")
         
