@@ -68,7 +68,7 @@ class kb_go_express:
         #x=ExpressionUtils()
 
         print "printing params"
-        print params
+        print json.dumps(params)
 
         go_express_runner = GOExpressUtil(self.config)
         returnVal = go_express_runner.run_goexpress_app(params)
