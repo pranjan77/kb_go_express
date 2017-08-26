@@ -6,6 +6,8 @@ MAINTAINER KBase Developer
 # install line here, a git checkout to download code, or run any other
 # installation scripts.
 
+
+
 # RUN apt-get update
 
 # Here we install a python coverage tool and an
@@ -39,7 +41,7 @@ RUN CODENAME=`grep CODENAME /etc/lsb-release | cut -c 18-` && \
     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
     sudo apt-get update && \
     yes '' | sudo apt-get -y install r-base && \
-	 echo 'install.packages(c("devtools"), lib="/kb/deployment/lib", repos="http://cran.rstudio.com")\n \
+	 echo 'install.packages(c("devtools", "optparse", "gplots"), lib="/kb/deployment/lib", repos="http://cran.rstudio.com")\n \
 	 .libPaths( c( .libPaths(), "/kb/deployment/lib") ) \n \
 	 library(devtools) \n \
 	 install_github("kevinrue/GOexpress")\n' > /kb/deployment/bin/rlibs/packages.R && \

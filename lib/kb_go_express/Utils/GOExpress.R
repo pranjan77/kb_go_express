@@ -1,12 +1,3 @@
-#!/data/home/amalakar/miniconda2/bin/Rscript
-
-##Load the packages
-
-library(GOexpress)
-library(Biobase)
-library(gplots)
-library(optparse)
-
 
 ## 1. x= cond , Return a list where names are "conditions" and values are "sample names"
 #
@@ -156,8 +147,13 @@ mergeGO<- function(BP, MF, CC) {
 
 
 
+.libPaths( c( .libPaths(), "/kb/deployment/lib") )
+##Load the packages
 
-
+library(GOexpress)
+library(Biobase)
+library(gplots)
+library(optparse)
 
 ##Reading command-line arguments in R
 
@@ -196,15 +192,18 @@ ifelse(!dir.exists(result_path), dir.create(result_path), F)
 
 ##Reading the geneDescription file 
 
-
 allgenes <- read.table(file = opt$geneDes, header = T, sep = "\t", stringsAsFactors = F, 
                        fill = T)# opt$geneDes-
-allgenes$external_gene_name <- sub(":$", "", paste(allgenes$gene_id, allgenes$description, sep = ":"))
+#allgenes$external_gene_name <- sub(":$", "", paste(allgenes$gene_id, allgenes$description, sep = ":"))
+#allgenes <- allgenes[,c(1,3,2)]
+
+
+write.table(allgenes, "file=test.txt", sep="\t")
 
 
 ##Preparing the GO and genes related annotation Files #############
 
-allGO <- read.csv(opt$goDes, header = T)#opt$goDes--Ptrichocarpa_210_v3.0.allGO.txt
+allGO <- read.table(opt$goDes, sep='\t', header = T, stringsAsFactors = F)#opt$goDes--Ptrichocarpa_210_v3.0.allGO.txt
 
 GOgenes <- read.table(opt$gi2go, header = T, sep = "\t", stringsAsFactors = F) # opt$gi2go -- Ptrichocarpa_210_v3.0.gi_go.txt
 

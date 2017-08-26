@@ -119,6 +119,7 @@ class kb_go_expressTest(unittest.TestCase):
                         'sample_id': ['717c Control_A_Shoot tip_1', 
                                       '717c Control_A_Shoot tip_2']}],
             'sample_id1':['WT', 'HY5'],
+            'workspace_name' : 'pranjan77:narrative_1502741003124',
             'num_permutations': 100
         }
 

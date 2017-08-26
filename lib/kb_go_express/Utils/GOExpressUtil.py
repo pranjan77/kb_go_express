@@ -1,5 +1,6 @@
 import time
 import json
+import glob
 import os
 import uuid
 import errno
@@ -43,12 +44,61 @@ class GOExpressUtil:
             else:
                 raise
 
+    def _parse_csv_to_json (self, csv_path, outjson):
+
+        df = dict()
+        df['data'] = list()
+        df['categories'] = list()
+        df['conditions'] = list()
+
+        with open(csv_path, 'rb') as resultfile:
+            next (resultfile)
+            result = csv.reader(resultfile, delimiter=',')
+            for row in result:
+             image_path = os.path.basename(row[11].rstrip())
+
+             row_details = {'go_id':row[1],
+                'ave_rank': row[2],
+                'ave_score': row[3],
+                'total_count':row[4],
+                'data_count': row[5],
+                'p_val': row[6],
+                'name_1006': row[7],
+                'namespace_1003': row[8],
+                'condition1': row[9],
+                'condition2': row[10],
+                'pathTOHMAP': "images" + "/" + image_path
+            }
+
+             df['data'].append(row_details)
+
+             df['categories'].append(row[8])
+             df['conditions'].append(row[9])
+             df['conditions'].append(row[10])
+
+        unique_categories = list(set(df['categories']))
+        unique_conditions = list(set(df['conditions']))
+
+        df['categories'] = unique_categories
+        df['conditions'] = unique_conditions
+
+
+        outfile = open (outjson, "w")
+
+        outfile.write(json.dumps(df))
+        outfile.close()
+
+        return outjson
+
+
+
+
     def _expression_object_to_tsv(self, expression_object, expression_matrix_TSV_path):
     
 
                 log ('Starting get_expression_matrix')
        
-                expression_matrix_data = self.df.get_objects({'object_refs':
+                expression_matrix_data = self.dfu.get_objects({'object_refs':
                                                   [expression_object]})['data'][0]['data']
                 #print expression_matrix_data
 
@@ -85,6 +135,8 @@ class GOExpressUtil:
         genome_features = self.gsu.search({'ref': genome_ref,
                                                'limit': feature_num,
                                                'sort_by': [['feature_id', True]]})['features']
+
+
 
         feature_id_go_id_list_map = {}
         go_id_feature_id_list_map = {}
@@ -158,7 +210,7 @@ class GOExpressUtil:
 
 
         file_list = {
-            "feature_id_go_ids_map_file": condition_sample_relationship_file,
+            "feature_id_go_ids_map_file": feature_id_go_ids_map_file,
             "go_id_description_file" :go_id_description_file,
             "feature_ids_file": feature_ids_file,
             "genome_info_file": genome_info_file,
@@ -189,13 +241,13 @@ class GOExpressUtil:
                 genome_info_file.write('features: {}\n'.format(len(total_feature_ids)))
                 genome_info_file.write('features with term: {}'.format(len(feature_ids_with_feature)))
 
-
+        seen_go_id = dict()
        
         with open(feature_id_go_ids_map_file, 'wb') as feature_id_go_ids_map_file:
             with open(go_id_description_file, 'wb') as go_id_description_file:
 
                 feature_id_go_ids_map_file.write('{}\t{}\n'.format("gene_id", "go_id"))
-                go_id_description_file.write('{}\t{}\t{}\n'.format("go_id","name", "namespace")) 
+                go_id_description_file.write('{}\t{}\t{}\n'.format("go_id","name_1006", "namespace_1003")) 
                                                                         
                 for feature_id, go_ids in feature_id_go_id_list_map.iteritems():
                     if isinstance(go_ids, str):
@@ -203,7 +255,10 @@ class GOExpressUtil:
                                                                             go_ids))
                         ontology_name = ontology_hash.get(go_ids).get('name')
                         ontology_namespace = ontology_hash.get(go_ids).get('namespace')
-                        go_id_description_file.write('{}\t{}\t{}\n'.format(go_ids, 
+                        if not go_ids in seen_go_id:
+                            seen_go_id[go_ids] = 1
+                            
+                            go_id_description_file.write('{}\t{}\t{}\n'.format(go_ids, 
                                                                         ontology_name, 
                                                                         ontology_namespace))
                     else:
@@ -212,14 +267,16 @@ class GOExpressUtil:
                                                                                 go_id))
                             ontology_name = ontology_hash.get(go_id).get('name')
                             ontology_namespace = ontology_hash.get(go_id).get('namespace')
-                            go_id_description_file.write('{}\t{}\t{}\n'.format(go_id, 
+                            if not go_id in seen_go_id:
+                                seen_go_id[go_id] = 1
+                                go_id_description_file.write('{}\t{}\t{}\n'.format(go_id, 
                                                                         ontology_name, 
                                                                         ontology_namespace))
 
                         
 
         with open(feature_ids_file, 'wb') as feature_ids_file:
-            feature_ids_file.write('{}\t{}\n'.format("gene_id", "description"))
+            feature_ids_file.write('{}\t{}\t{}\n'.format("gene_id", "external_gene_name" , "description"))
 
             for genome_feature in genome_features:
                 feature_id = genome_feature.get('feature_id')
@@ -228,7 +285,16 @@ class GOExpressUtil:
                 ontology_terms = genome_feature.get('ontology_terms')
 
                 if ontology_terms:
-                    feature_ids_file.write('{}\t{}\n'.format(feature_id, feature_func))
+                    #feature_func1 = feature_func.decode('string_escape')
+                    #feature_func1.replace("'", r".")
+                    external_gene_name = feature_id + ":" + feature_func
+                    external_gene_name = external_gene_name[:50]
+
+                    external_gene_name = '"' + external_gene_name + '"'
+
+
+                    feature_func1 = '"' + feature_func + '"'
+                    feature_ids_file.write('{}\t{}\t{}\n'.format(feature_id, external_gene_name, feature_func1))
 
         expression_matrix_file = self._expression_object_to_tsv(params['expression_ref'],
                                                                 expression_matrix_file)  
@@ -266,12 +332,14 @@ class GOExpressUtil:
         if (exitCode == 0):
             log('Executed commend:\n{}\n'.format(command) +
             'Exit Code: {}\nOutput:\n{}'.format(exitCode, output))
+            return exitCode
         else:
             error_msg = 'Error running commend:\n{}\n'.format(command)
             error_msg += 'Exit Code: {}\nOutput:\n{}'.format(exitCode, output)
             raise ValueError(error_msg)
+            return 'error'
 
-    def _generate_goexpress_command(self, result_directory, 
+    def _run_goexpress_command(self, result_directory, 
                                         supporting_files, params):
         r = supporting_files[0]['file_list']
         result_files = os.listdir(result_directory)
@@ -286,10 +354,71 @@ class GOExpressUtil:
 
         rcmd_str = " ".join(str(x) for x in rcmd_list)
 
-        return rcmd_str
+        print rcmd_str
 
 #        print rcmd_str
-#        self._run_command(rcmd_str)
+        self._run_command(rcmd_str)
+
+
+    def _generate_report_from_dir(self, output_html_files, supporting_files, params):
+        
+        objects_created = []
+
+        report_params = {'message': '',
+                         'workspace_name': params.get('workspace_name'),
+                         'objects_created': objects_created,
+                         'file_links': supporting_files,
+                         'html_links': output_html_files,
+                         'direct_html_link_index': 0,
+                         'html_window_height': 333,
+                        'report_object_name': 'kb_goexpress_report_' + str(uuid.uuid4())}
+
+        kbase_report_client = KBaseReport(self.callback_url)
+        output = kbase_report_client.create_extended_report(report_params)
+        report_output = {'report_name': output['name'], 'report_ref': output['ref']}
+        return report_output
+
+
+
+
+    def _generate_goexpress_report (self, result_directory, params):
+
+         #create report directory and image sub directory
+        report_directory = os.path.join(self.scratch, str(uuid.uuid4()))
+        self._mkdir_p(report_directory)
+        report_image_directory = os.path.join(report_directory, "images")
+        self._mkdir_p(report_image_directory)
+        #copy all images to report directory
+        for pngfile in glob.iglob(os.path.join(result_directory, "*.png")):
+            shutil.copy(pngfile, report_image_directory)
+
+        html_template = os.path.join(os.path.dirname(__file__), "report.html")
+        shutil.copy(html_template, report_directory)
+
+        script_file = os.path.join(os.path.dirname(__file__), "script.js")
+        shutil.copy(script_file, report_directory)
+
+        csv_path =  os.path.join(result_directory, "AllCombined.csv")
+        json_path = os.path.join(result_directory, "out.json")
+        
+        json_path = self._parse_csv_to_json (csv_path, json_path)
+        shutil.copy(json_path, report_directory)
+        shutil.copy(csv_path, report_directory)
+
+        report_shock_id = self.dfu.file_to_shock({'file_path': report_directory,
+                                                'pack': 'zip'})['shock_id']
+
+        html_report = list()
+
+        report_file_path = os.path.join(report_directory, 'report.html')
+
+        html_report.append({'shock_id': report_shock_id,
+                            'name': os.path.basename(report_file_path),
+                            'label': os.path.basename(report_file_path),
+                            'description': 'HTML summary report for GOExpress App'})
+        return html_report
+        
+
 
 
 
@@ -298,7 +427,7 @@ class GOExpressUtil:
             self.callback_url = config['SDK_CALLBACK_URL']
             self.token = config['KB_AUTH_TOKEN']
             self.shock_url = config['shock-url']
-            self.df = DataFileUtil(self.callback_url)
+            self.dfu = DataFileUtil(self.callback_url)
             self.gsu = GenomeSearchUtil(self.callback_url)
             self.ws = Workspace(self.ws_url, token=self.token)
             self.scratch = config['scratch']
@@ -324,9 +453,17 @@ class GOExpressUtil:
                                                 params['genome_ref'],
                                                 genome_features, ontology_hash, params)
 
-        rcmd_str = self._generate_goexpress_command(result_directory, 
+        exitcode = self._run_goexpress_command(result_directory, 
                                         supporting_files, params)
-        print rcmd_str
 
+        print exitcode
+
+        
+        output_html_files = self._generate_goexpress_report (result_directory, params)
+        print output_html_files
+
+        outx =  self._generate_report_from_dir(output_html_files, supporting_files, params)
+        print outx
+        
 
 
