@@ -44,51 +44,103 @@ class GOExpressUtil:
             else:
                 raise
 
-    def _parse_csv_to_json (self, csv_path, outjson):
 
-        df = dict()
-        df['data'] = list()
-        df['categories'] = list()
-        df['conditions'] = list()
+    def _csv_to_html (self,csv_path, result_file_path):
+
+
+        counter=0
+        tabledata = ""
+        imagedata = ""
 
         with open(csv_path, 'rb') as resultfile:
-            next (resultfile)
             result = csv.reader(resultfile, delimiter=',')
             for row in result:
-             image_path = os.path.basename(row[11].rstrip())
+                image_path = os.path.basename(row[11].rstrip())
 
-             row_details = {'go_id':row[1],
-                'ave_rank': row[2],
-                'ave_score': row[3],
-                'total_count':row[4],
-                'data_count': row[5],
-                'p_val': row[6],
-                'name_1006': row[7],
-                'namespace_1003': row[8],
-                'condition1': row[9],
-                'condition2': row[10],
-                'pathTOHMAP': "images" + "/" + image_path
-            }
-
-             df['data'].append(row_details)
-
-             df['categories'].append(row[8])
-             df['conditions'].append(row[9])
-             df['conditions'].append(row[10])
-
-        unique_categories = list(set(df['categories']))
-        unique_conditions = list(set(df['conditions']))
-
-        df['categories'] = unique_categories
-        df['conditions'] = unique_conditions
+                row_details = {'go_id':row[1],
+                    'ave_rank': row[2],
+                    'ave_score': row[3],
+                    'total_count':row[4],
+                    'data_count': row[5],
+                    'p_val': row[6],
+                    'name_1006': row[7],
+                    'namespace_1003': row[8],
+                    'condition1': row[9],
+                    'condition2': row[10],
+                    'pathTOHMAP': "images" + "/" + image_path
+                }
 
 
-        outfile = open (outjson, "w")
 
-        outfile.write(json.dumps(df))
-        outfile.close()
+                counter += 1
+                if counter == 1:
+                    print counter
+                    tabledata += '<table id="example" class="display" cellspacing="0" width="100%">'
+                    tabledata += "<thead>"
 
-        return outjson
+                    tabledata += "<tr>" 
+                    tabledata +=    "<th>GO_id</th>" 
+                    tabledata +=    "<th>GO definition</th>" 
+                    tabledata +=    "<th>p-value</th>" 
+                    tabledata +=    "<th>First condition</th>" 
+                    tabledata +=    "<th>Second condition</th>" 
+                    tabledata +=    "<th>GO Category</th>" 
+                    tabledata +=    "<th>Heatmap link</th>"
+                    tabledata += "</tr>"
+                    
+
+                    tabledata += '<tr id="filters">'
+                    tabledata +=    '<th></th>'
+                    tabledata +=    '<th></th>'
+                    tabledata +=    '<th></th>'
+                    tabledata +=    '<th></th>'
+                    tabledata +=    '<th></th>'
+                    tabledata +=    '<th></th>'
+                    tabledata +=    '<th></th>'
+                    tabledata += '</tr>'
+                    
+                    tabledata += "</thead>"
+
+                    tabledata += "<tbody>"
+
+
+                else:
+       
+                    tabledata += "\n<tr>" 
+                    tabledata +=    "<td>" + row_details.get('go_id') + "</td>" 
+                    tabledata +=    "<td>" + row_details.get('name_1006') +  "</td>" 
+                    tabledata +=    "<td>" + row_details.get('p_val') + "</td>" 
+                    tabledata +=    "<td>" + row_details.get('condition1') + "</td>" 
+                    tabledata +=    "<td>" + row_details.get('condition2') + "</td>" 
+                    tabledata +=    "<td>" + row_details.get('namespace_1003') + "</td>" 
+                    tabledata += '<td>'  + '<a href = "#' + row_details.get('pathTOHMAP') +  '">' 
+                    tabledata +=          '<img src="' + row_details.get('pathTOHMAP')  
+                    tabledata +=           '",height=20, width=100></a>' + '</td>'
+     
+                    tabledata += "</tr>\n"
+
+                    imagedata +=  '<span id ="' + row_details.get('pathTOHMAP') +  '">' 
+                    imagedata +=            '<img src="' + row_details.get('pathTOHMAP')  
+                    imagedata +=           '",height=500, width=500>' + '</span>' + "\n"
+
+
+
+        tabledata += "</tbody>"
+        tabledata += "</table>"
+
+
+        with open(result_file_path, 'w') as result_file:
+            with open(os.path.join(os.path.dirname(__file__), 'report_template.html'),
+                'r') as report_template_file:
+                report_template = report_template_file.read()
+                report_template = report_template.replace('tabledata',
+                                                          tabledata)
+                report_template = report_template.replace('imagedata',
+                                                          imagedata)
+            
+            result_file.write(report_template)
+
+        return result_file_path
 
 
 
@@ -393,30 +445,19 @@ class GOExpressUtil:
         for pngfile in glob.iglob(os.path.join(result_directory, "*.png")):
             shutil.copy(pngfile, report_image_directory)
 
-        html_template = os.path.join(os.path.dirname(__file__), "report.html")
-        shutil.copy(html_template, report_directory)
+        sfiles =  os.path.join(os.path.dirname(__file__), "sfiles")
 
-        script_file = os.path.join(os.path.dirname(__file__), "script.js")
-        shutil.copy(script_file, report_directory)
-
-        d3_js = os.path.join(os.path.dirname(__file__),"d3.v3.min.js")
-        shutil.copy(d3_js, report_directory)
-
-
+        shutil.copytree(sfiles, "report_directory/sfiles")
 
         csv_path =  os.path.join(result_directory, "AllCombined.csv")
-        json_path = os.path.join(result_directory, "out.json")
-        
-        json_path = self._parse_csv_to_json (csv_path, json_path)
-        shutil.copy(json_path, report_directory)
-        shutil.copy(csv_path, report_directory)
+        report_file_path = os.path.join(report_directory, "report.html")
 
+        report_html_exit_code = self._csv_to_html(csv_path, report_file_path)
+        
         report_shock_id = self.dfu.file_to_shock({'file_path': report_directory,
                                                 'pack': 'zip'})['shock_id']
 
         html_report = list()
-
-        report_file_path = os.path.join(report_directory, 'report.html')
 
         html_report.append({'shock_id': report_shock_id,
                             'name': os.path.basename(report_file_path),
