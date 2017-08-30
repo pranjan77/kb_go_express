@@ -446,8 +446,9 @@ class GOExpressUtil:
             shutil.copy(pngfile, report_image_directory)
 
         sfiles =  os.path.join(os.path.dirname(__file__), "sfiles")
+        sfiles_dest = os.path.join(report_directory, "sfiles")
 
-        shutil.copytree(sfiles, "report_directory/sfiles")
+        shutil.copytree(sfiles, sfiles_dest)
 
         csv_path =  os.path.join(result_directory, "AllCombined.csv")
         report_file_path = os.path.join(report_directory, "report.html")
